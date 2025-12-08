@@ -11,7 +11,6 @@ class CustomManagerUser(BaseUserManager):
         if not phone_number:
             raise ValueError("User must provide phone number.")
 
-        phone_number=phone_number.strip()
 
         user=self.model(
             phone_number=phone_number,
