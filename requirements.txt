@@ -1,4 +1,6 @@
 Django==5.2
 
 django-phonenumber-field==8.4.0
+phonenumbers==9.0.20
 
+drf-yasg==1.21.11
