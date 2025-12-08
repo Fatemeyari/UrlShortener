@@ -1,6 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import  BaseUserManager
+from django.contrib.auth.models import  BaseUserManager ,AbstractBaseUser , PermissionsMixin
 
+from phonenumber_field.modelfields import PhoneNumberField
 class CustomManagerUser(BaseUserManager):
     """
     Manager for custom User model to handle user creation and superuser creation.
@@ -35,5 +36,22 @@ class CustomManagerUser(BaseUserManager):
         return self.create_user(phone_number, password, **extra_fields)
 
 
+
+
+class User(AbstractBaseUser, PermissionsMixin):
+    phone_number = PhoneNumberField(max_length=15, unique=True)
+    email = models.EmailField(blank=True, null=True)
+
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    created_time = models.DateTimeField(auto_now_add=True)
+    updated_time = models.DateTimeField(auto_now=True)
+
+    USERNAME_FIELD = "phone_number"
+    REQUIRED_FIELDS = []
+    objects = CustomManagerUser()
+
+    def __str__(self):
+        return self.phone_number
 
 
