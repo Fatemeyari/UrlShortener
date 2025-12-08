@@ -52,5 +52,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.phone_number
+    class Meta:
+        verbose_name='user'
+        verbose_name_plural='users'
 
 
