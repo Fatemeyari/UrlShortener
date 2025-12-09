@@ -1,5 +1,4 @@
 from django.contrib import admin
-from requests.compat import has_simplejson
 
 from .models import User ,Profile
 
