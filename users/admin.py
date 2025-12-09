@@ -3,6 +3,10 @@ from requests.compat import has_simplejson
 
 from .models import User ,Profile
 
+
+class ProfileAdminInLine(admin.StackedInline):
+    model=Profile
+
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_time'
@@ -22,6 +26,7 @@ class UserAdmin(admin.ModelAdmin):
     list_filter = ['is_superuser' , 'is_staff' , 'is_active']
     search_fields = ['phone_number' , 'email']
     empty_value_display='empty'
+    inlines = [ProfileAdminInLine]
 
     def show_fullname(self , obj):
         if hasattr(obj, "profile") and obj.profile:
