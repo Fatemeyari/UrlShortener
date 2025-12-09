@@ -51,15 +51,15 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = CustomManagerUser()
 
     def __str__(self):
-        return self.phone_number
+        return str(self.phone_number)
     class Meta:
-        verbose_name='user'
-        verbose_name_plural='users'
+        verbose_name='User'
+        verbose_name_plural='Users'
 
 
 class Profile(models.Model):
-    user=models.OneToOneField(User, on_delete=models.CASCADE)
-    full_name=models.CharField(max_length=225)
+    user=models.OneToOneField(User, on_delete=models.CASCADE,related_name='profile')
+    full_name=models.CharField(blank=True , null=True,max_length=225)
     avatar=models.ImageField(upload_to='avatars/%Y/%m/%d' , blank=True , null=True)
     bio=models.TextField(blank=True , null=True)
     website=models.URLField(blank=True , null=True)
@@ -69,4 +69,12 @@ class Profile(models.Model):
 
     def __str__(self):
         return f"Profile of {self.full_name}"
+
+    @property
+    def effective_url_limit(self):
+        return 1000 if self.is_premium else 50
+
+    class Meta:
+        verbose_name='Profile'
+        verbose_name_plural='Profiles'
 
