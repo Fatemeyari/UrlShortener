@@ -9,8 +9,8 @@ class ProfileAdminInLine(admin.StackedInline):
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_time'
-    list_display = ('phone_number'  ,'show_fullname','show_effective_url_limit' ,'is_superuser','is_staff','is_active',
-                    'created_time')
+    list_display = ('phone_number'  , 'email','show_fullname','show_effective_url_limit' ,'is_superuser','is_staff',
+                    'is_active','created_time')
 
     fieldsets = [
         ('Information of User' , {
