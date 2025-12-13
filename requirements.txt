@@ -11,3 +11,6 @@ django-filter==25.2
 
 #jwt
 djangorestframework_simplejwt==5.5.1
+
+#redis
+redis==7.1.0
