@@ -3,12 +3,11 @@ from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework import status
 
-from rest_framework_simplejwt.tokens import AccessToken
+from rest_framework_simplejwt.tokens import AccessToken , RefreshToken
 from django.contrib.auth import get_user_model
 
-from .serializers import UserRegistrationSerializer
-from ...utils import send_verification_email
-from ...redis_client import redis_client
+from .serializers import UserRegistrationSerializer , ResendActivationsSerializer
+from ...utils import send_verification_email , resend_varification_email
 
 User = get_user_model()
 
@@ -55,3 +54,25 @@ class VerifyEmailAPIView(APIView):
 
         except Exception as e:
             return Response( {"detail": "Invalid or expired token"},status=status.HTTP_400_BAD_REQUEST)
+
+class ResendActivationAPIView(generics.GenericAPIView):
+    serializer_class = ResendActivationsSerializer
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        email = serializer.validated_data.get("email")
+        user = User.objects.filter(email=email).first()
+
+        if not user:
+            return Response({"detail": "User with this email does not exist."}, status=400)
+
+        if user.is_active:
+            return Response({"message": "Account already activated"}, status=200)
+
+        resend_varification_email(user)
+        return Response({
+            "message": "Activation link has been resent to your email"
+        }, status=201)
+
