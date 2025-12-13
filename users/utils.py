@@ -1,16 +1,12 @@
-from rest_framework_simplejwt.tokens import RefreshToken ,AccessToken
-
 from django.core.mail import send_mail
 from django.conf import settings
-from .redis_client import redis_client
 
-from rest_framework_simplejwt.tokens import AccessToken
+from rest_framework_simplejwt.tokens import AccessToken , RefreshToken
 
 def store_email_verification_token(user):
     token = AccessToken.for_user(user)
     token["email_verify"] = True
     return str(token)
-
 
 
 def send_verification_email(user):
@@ -26,3 +22,10 @@ def send_verification_email(user):
         recipient_list=[user.email],
         fail_silently=False
     )
+
+
+
+def store_email_resend_varification_token(user):
+    token=RefreshToken.for_user(user)
+    token['resend_email_verify']=True
+    return str(token)
