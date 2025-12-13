@@ -76,3 +76,29 @@ class ResendActivationAPIView(generics.GenericAPIView):
             "message": "Activation link has been resent to your email"
         }, status=201)
 
+
+class ResendVerifyEmailAPIView(APIView):
+    def get(self, request):
+        token = request.query_params.get('token')
+        if not token:
+            return Response({"detail": "Token missing"}, status=400)
+
+        try:
+            payload = RefreshToken(token)
+
+            if not payload.get("resend_email_verify"):
+                return Response({"detail": "Invalid token"}, status=400)
+
+            user_id = payload["user_id"]
+            user = User.objects.get(id=user_id)
+
+            if user.is_active:
+                return Response({"message": "Account already activated"}, status=200)
+
+            user.is_active = True
+            user.save(update_fields=["is_active"])
+
+            return Response({"message": "Email verified successfully"}, status=200)
+
+        except Exception as e:
+            return Response({"detail": "Invalid or expired token"}, status=400)
