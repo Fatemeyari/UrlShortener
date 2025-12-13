@@ -1,3 +1,9 @@
+from rest_framework_simplejwt.tokens import RefreshToken ,AccessToken
+
+from django.core.mail import send_mail
+from django.conf import settings
+from .redis_client import redis_client
+
 from rest_framework_simplejwt.tokens import AccessToken
 
 def store_email_verification_token(user):
@@ -6,3 +12,17 @@ def store_email_verification_token(user):
     return str(token)
 
 
+
+def send_verification_email(user):
+    token = store_email_verification_token(user)
+    verification_link = (
+        f"http://localhost:8000/users/api/v1/activation/?token={token}"
+    )
+
+    send_mail(
+        subject='Activate your account',
+        message=f'Click this link to verify your email: {verification_link}',
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[user.email],
+        fail_silently=False
+    )
