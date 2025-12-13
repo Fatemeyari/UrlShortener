@@ -3,3 +3,11 @@ django-phonenumber-field==8.4.0
 phonenumbers==9.0.20
 drf-yasg==1.21.11
 pillow==12.0.0
+
+#restframework
+djangorestframework==3.16.1
+Markdown==3.10
+django-filter==25.2
+
+#jwt
+djangorestframework_simplejwt==5.5.1
