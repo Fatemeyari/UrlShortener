@@ -73,11 +73,13 @@ class PasswordResetConfirmSerializer(serializers.Serializer):
         return attrs
 
 class UserSerializer(serializers.Serializer):
-    phone_number=serializers.CharField(read_only=True)
-    email=serializers.EmailField(read_only=True)
+    phone_number=serializers.CharField()
+    email=serializers.EmailField()
 
 class UserProfileSerializer(serializers.ModelSerializer):
     user=UserSerializer()
     class Meta:
         model=Profile
         fields=['user' , 'full_name','avatar', 'bio' , 'website', 'is_premium']
+
+
