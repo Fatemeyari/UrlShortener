@@ -4,11 +4,12 @@ from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import AccessToken , RefreshToken , TokenError
+
 from django.contrib.auth import get_user_model
 
-from .serializers import UserRegistrationSerializer , ResendActivationsSerializer , UserLoginSerializer
-
-from ...utils import send_verification_email , resend_varification_email
+from .serializers import (UserRegistrationSerializer , ResendActivationsSerializer , UserLoginSerializer ,
+                          PasswordResetRequestSerializer )
+from ...utils import send_verification_email , resend_varification_email , send_password_reset_email
 
 User = get_user_model()
 
@@ -135,3 +136,16 @@ class LogoutAPIView(APIView):
                 {"message": "Logout successful"}, status=status.HTTP_205_RESET_CONTENT)
         except TokenError:
             return Response({"detail": "Invalid or expired refresh token"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class PasswordResetRequestAPIView(generics.GenericAPIView):
+    serializer_class = PasswordResetRequestSerializer
+
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        email = serializer.validated_data['email']
+        user = User.objects.get(email=email)
+        send_password_reset_email(user)
+        return Response({"message": "Password reset link has been sent to your email."}, status=status.HTTP_200_OK)
+
