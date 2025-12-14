@@ -1,7 +1,8 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
 
-from ...models import User
+from ...models import User , Profile
+
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
@@ -70,3 +71,8 @@ class PasswordResetConfirmSerializer(serializers.Serializer):
         if attrs['new_password'] != attrs['confirm_password']:
             raise serializers.ValidationError("Passwords do not match.")
         return attrs
+
+class UserSerializer(serializers.Serializer):
+    phone_number=serializers.CharField(read_only=True)
+    email=serializers.EmailField(read_only=True)
+
