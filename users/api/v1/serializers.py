@@ -51,3 +51,14 @@ class UserLoginSerializer(serializers.Serializer):
 
         attrs["user"] = user
         return attrs
+
+
+
+class PasswordResetRequestSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+    def validate_email(self, value):
+        if not User.objects.filter(email=value).exists():
+            raise serializers.ValidationError("No user is associated with this email.")
+        return value
+
