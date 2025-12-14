@@ -66,10 +66,10 @@ class ResendActivationAPIView(generics.GenericAPIView):
         user = User.objects.filter(email=email).first()
 
         if not user:
-            return Response({"detail": "User with this email does not exist."}, status=400)
+            return Response({"detail": "User with this email does not exist."}, status=status.HTTP_400_BAD_REQUEST)
 
         if user.is_active:
-            return Response({"message": "Account already activated"}, status=200)
+            return Response({"message": "Account already activated"}, status=status.HTTP_200_OK)
 
         resend_varification_email(user)
         return Response({
@@ -81,24 +81,24 @@ class ResendVerifyEmailAPIView(APIView):
     def get(self, request):
         token = request.query_params.get('token')
         if not token:
-            return Response({"detail": "Token missing"}, status=400)
+            return Response({"detail": "Token missing"}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             payload = RefreshToken(token)
 
             if not payload.get("resend_email_verify"):
-                return Response({"detail": "Invalid token"}, status=400)
+                return Response({"detail": "Invalid token"}, status=status.HTTP_400_BAD_REQUEST)
 
             user_id = payload["user_id"]
             user = User.objects.get(id=user_id)
 
             if user.is_active:
-                return Response({"message": "Account already activated"}, status=200)
+                return Response({"message": "Account already activated"}, status=status.HTTP_200_OK)
 
             user.is_active = True
             user.save(update_fields=["is_active"])
 
-            return Response({"message": "Email verified successfully"}, status=200)
+            return Response({"message": "Email verified successfully"}, status=status.HTTP_200_OK)
 
         except Exception as e:
-            return Response({"detail": "Invalid or expired token"}, status=400)
+            return Response({"detail": "Invalid or expired token"}, status=status.HTTP_400_BAD_REQUEST)
