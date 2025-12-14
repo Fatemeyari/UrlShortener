@@ -2,14 +2,16 @@ from rest_framework.response import Response
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated , IsAuthenticatedOrReadOnly
 from rest_framework_simplejwt.tokens import AccessToken , RefreshToken , TokenError
 
+from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 
 from .serializers import (UserRegistrationSerializer , ResendActivationsSerializer , UserLoginSerializer ,
-                          PasswordResetRequestSerializer ,PasswordResetConfirmSerializer)
+                          PasswordResetRequestSerializer ,PasswordResetConfirmSerializer, UserProfileSerializer)
 from ...utils import send_verification_email , resend_varification_email , send_password_reset_email
+from ...models import Profile
 
 User = get_user_model()
 
@@ -172,3 +174,11 @@ class PasswordResetConfirmAPIView(APIView):
         user.set_password(serializer.validated_data['new_password'])
         user.save()
         return Response({"message": "Password has been reset successfully."}, status=status.HTTP_200_OK)
+
+class ShowUserProfile(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        profile = request.user.profile
+        serializer = UserProfileSerializer(profile)
+        return Response(serializer.data, status=status.HTTP_200_OK)
