@@ -42,3 +42,15 @@ def resend_varification_email(user):
         recipient_list=[user.email],
         fail_silently=False
     )
+
+def send_password_reset_email(user):
+    token = AccessToken.for_user(user)
+    token['reset_password'] = True
+    reset_link = f"http://localhost:8000/users/api/v1/reset-password/confirm/?token={token}"
+    send_mail(
+        subject="Reset Your Password",
+        message=f"Click this link to reset your password: {reset_link}",
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[user.email],
+        fail_silently=False
+    )
