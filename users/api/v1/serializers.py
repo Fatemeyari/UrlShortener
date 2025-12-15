@@ -90,3 +90,22 @@ class ChangeUserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['email', 'phone_number']
 
+
+class ChangeUserProfileSerializer(serializers.ModelSerializer):
+    user = UserSerializer(required=False)
+
+    class Meta:
+        model = Profile
+        fields = ['user', 'full_name', 'avatar', 'bio', 'website', 'is_premium']
+
+    def update(self, instance, validated_data):
+        user_data = validated_data.pop('user', None)
+        for attr, value in user_data.items():
+            setattr(instance.user, attr, value)
+        instance.user.save()
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+
+        return instance
