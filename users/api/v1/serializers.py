@@ -1,8 +1,10 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
+from django.contrib.auth import get_user_model
 
 from ...models import User , Profile
 
+user=get_user_model()
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
@@ -82,4 +84,9 @@ class UserProfileSerializer(serializers.ModelSerializer):
         model=Profile
         fields=['user' , 'full_name','avatar', 'bio' , 'website', 'is_premium']
 
+
+class ChangeUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['email', 'phone_number']
 
