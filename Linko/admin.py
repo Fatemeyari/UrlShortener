@@ -12,7 +12,7 @@ class ShortUrlAdmin(admin.ModelAdmin):
     list_display_links = ('short_code',)
 
     fieldsets = [
-        ('Information of Link', {
+        ('Link Information', {
             'fields': ('user', 'original_url', 'short_code','clicks', 'is_active', 'custom_alias', 'qr_code')
         }),
         ('Date Information' , {
