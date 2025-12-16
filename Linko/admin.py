@@ -9,6 +9,9 @@ class ShorUrlInlineAdmin(admin.StackedInline):
 class ClickStatsInlineAdmin(admin.StackedInline):
     model=ClickStats
     extra=0
+    readonly_fields = ['ip_address','browser','country','timestamp']
+    can_delete = False
+    show_change_link = False
 
 @admin.register(ShortURL)
 class ShortUrlAdmin(admin.ModelAdmin):
