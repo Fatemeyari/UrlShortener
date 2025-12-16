@@ -45,3 +45,54 @@ class ShortUrlAdmin(admin.ModelAdmin):
             return obj.user.email
         return '-'
 
+
+@admin.register(ClickStats)
+class ClickStatsAdmin(admin.ModelAdmin):
+    date_hierarchy = 'timestamp'
+    list_display = [
+        'show_user', 'show_email', 'show_original_url', 'show_short_code', 'ip_address','browser','country'
+    ]
+
+    fieldsets = [
+        ('ClickStat Information', {
+            'fields': ('short_url', 'ip_address', 'browser', 'country')
+        }),
+        ('Date Information', {
+            'fields': ('timestamp',)
+        })
+
+    ]
+    readonly_fields = ['short_url', 'ip_address', 'browser', 'country', 'timestamp']
+    list_filter = ['short_url' , 'browser' , 'country']
+    search_fields = ['short_url__user__phone_number' , 'short_url__user__email']
+    empty_value_display='empty'
+
+
+    @admin.display(description='Phone Number')
+    def show_user(self , obj):
+        if hasattr(obj , 'short_url') and obj.short_url:
+            return obj.short_url.user.phone_number
+        return '-'
+
+    @admin.display(description='Email')
+    def show_email(self , obj):
+        if hasattr(obj , 'short_url') and obj.short_url:
+            return obj.short_url.user.email
+        return '-'
+
+    @admin.display(description='Original URL')
+    def show_original_url(self, obj):
+        if hasattr(obj, 'short_url') and obj.short_url:
+            return obj.short_url.original_url
+        return '-'
+
+    @admin.display(description='Short Code')
+    def show_short_code(self, obj):
+        if hasattr(obj, 'short_url') and obj.short_url:
+            return obj.short_url.short_code
+        return '-'
+
+
+
+
+
