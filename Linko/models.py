@@ -7,7 +7,7 @@ from users.models import User
 class ShortURL(models.Model):
     user=models.ForeignKey(User , on_delete=models.CASCADE , related_name='short_urls')
     original_url=models.URLField(max_length=2048)
-    short_url=models.CharField(unique=True)
+    short_code=models.CharField(unique=True, db_index=True)
     clicks=models.IntegerField(default=0)
     is_active=models.BooleanField(default=True)
     custom_alias = models.CharField(max_length=50, unique=True, null=True, blank=True)
@@ -22,4 +22,10 @@ class ShortURL(models.Model):
     class Meta:
         verbose_name='ShortURL'
         verbose_name_plural='ShortURLs'
+        indexes=[
+            models.Index(fields=['short_code']),
+            models.Index(fields=['created_time']),
+        ]
+        ordering=['-created_time']
+
 
