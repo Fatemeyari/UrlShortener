@@ -29,3 +29,22 @@ class ShortURL(models.Model):
         ordering=['-created_time']
 
 
+class ClickStats(models.Model):
+    short_url = models.ForeignKey(ShortURL, on_delete=models.CASCADE, related_name='click_stats')
+    ip_address = models.GenericIPAddressField(null=True, blank=True)
+    browser = models.CharField(max_length=100)
+    country = models.CharField(max_length=100)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.short_url.short_code
+
+    class Meta:
+        verbose_name='Click Stat'
+        verbose_name_plural='Click Stats'
+
+        indexes=[
+            models.Index(fields=['timestamp'])
+        ]
+        ordering=['-timestamp']
+
