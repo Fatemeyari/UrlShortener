@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from .models import User ,Profile
-
+from Linko.admin import ShorUrlInlineAdmin
 
 class ProfileAdminInLine(admin.StackedInline):
     model=Profile
@@ -25,7 +25,7 @@ class UserAdmin(admin.ModelAdmin):
     list_filter = ['is_superuser' , 'is_staff' , 'is_active']
     search_fields = ['phone_number' , 'email']
     empty_value_display='empty'
-    inlines = [ProfileAdminInLine]
+    inlines = [ProfileAdminInLine,ShorUrlInlineAdmin]
 
     def show_fullname(self , obj):
         if hasattr(obj, "profile") and obj.profile:
