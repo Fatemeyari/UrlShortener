@@ -1,11 +1,14 @@
 from django.contrib import admin
 
-from .models import ShortURL
+from .models import ShortURL , ClickStats
 
 class ShorUrlInlineAdmin(admin.StackedInline):
     model=ShortURL
     extra=0
 
+class ClickStatsInlineAdmin(admin.StackedInline):
+    model=ClickStats
+    extra=0
 
 @admin.register(ShortURL)
 class ShortUrlAdmin(admin.ModelAdmin):
@@ -28,6 +31,7 @@ class ShortUrlAdmin(admin.ModelAdmin):
     list_filter = ['user','is_active' , 'created_time','expires_time']
     search_fields = ['original_url', 'user__email', 'user__phone_number']
     empty_value_display='empty'
+    inlines = [ClickStatsInlineAdmin]
 
     @admin.display(description='Phone Number')
     def show_user(self , obj):
