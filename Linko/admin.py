@@ -2,6 +2,11 @@ from django.contrib import admin
 
 from .models import ShortURL
 
+class ShorUrlInlineAdmin(admin.StackedInline):
+    model=ShortURL
+    extra=0
+
+
 @admin.register(ShortURL)
 class ShortUrlAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_time'
@@ -9,7 +14,6 @@ class ShortUrlAdmin(admin.ModelAdmin):
         'show_user', 'show_email' , 'original_url' , 'short_code' , 'is_active'
     ]
 
-    list_display_links = ('short_code',)
 
     fieldsets = [
         ('Link Information', {
