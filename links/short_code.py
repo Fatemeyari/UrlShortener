@@ -11,3 +11,10 @@ def generate_short_code(length=6):
         code=''.join(random.choices(chars, k=length))
         if not ShortURL.objects.filter(short_code=code).exists():
             return code
+
+def validate_short_url(alias):
+    if alias in ALIAS_RESERVED:
+        raise ValueError('This alias is reserved.')
+
+    if ShortURL.objects.filter(custom_alias=alias).exists():
+        raise ValueError('This alias is already taken.')
