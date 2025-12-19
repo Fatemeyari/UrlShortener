@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'phonenumber_field',
     'users',
-    'Linko'
+    'links'
 ]
 
 MIDDLEWARE = [

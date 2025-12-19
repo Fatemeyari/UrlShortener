@@ -6,7 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('Linko', '0001_initial'),
+        ('links', '0001_initial'),
     ]
 
     operations = [

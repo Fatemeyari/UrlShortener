@@ -7,7 +7,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('Linko', '0002_rename_short_url_shorturl_short_code'),
+        ('links', '0002_rename_short_url_shorturl_short_code'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 

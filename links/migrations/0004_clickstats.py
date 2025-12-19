@@ -7,7 +7,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('Linko', '0003_alter_shorturl_options_alter_shorturl_short_code_and_more'),
+        ('links', '0003_alter_shorturl_options_alter_shorturl_short_code_and_more'),
     ]
 
     operations = [
@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
                 ('browser', models.CharField(max_length=100)),
                 ('country', models.CharField(max_length=100)),
                 ('timestamp', models.DateTimeField(auto_now_add=True)),
-                ('short_url', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='click_stats', to='Linko.shorturl')),
+                ('short_url', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='click_stats', to='links.shorturl')),
             ],
             options={
                 'verbose_name': 'Click Stat',

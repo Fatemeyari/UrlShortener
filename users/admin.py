@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from .models import User ,Profile
-from Linko.admin import ShorUrlInlineAdmin
+from links.admin import ShorUrlInlineAdmin
 
 class ProfileAdminInLine(admin.StackedInline):
     model=Profile
