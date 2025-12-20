@@ -1,8 +1,8 @@
-from rest_framework.generics import CreateAPIView, UpdateAPIView, DestroyAPIView
+from rest_framework.generics import CreateAPIView, UpdateAPIView, DestroyAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated
 
 
-from .serializers import ShortUrlCreateSerializer , ShortUrlUpdateSerializer
+from .serializers import ShortUrlCreateSerializer , ShortUrlUpdateSerializer , ShortUrlListSerializer
 from ...models import ShortURL
 
 
@@ -25,3 +25,8 @@ class ShortUrlDeleteAPIView(DestroyAPIView):
         return ShortURL.objects.filter(user=self.request.user)
 
 
+class ShortUrlListAPIView(ListAPIView):
+    serializer_class = ShortUrlListSerializer
+    permission_classes = [IsAuthenticated]
+    def get_queryset(self):
+        return ShortURL.objects.filter(user=self.request.user)
