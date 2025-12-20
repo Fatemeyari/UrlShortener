@@ -1,4 +1,4 @@
-from rest_framework.generics import CreateAPIView, UpdateAPIView
+from rest_framework.generics import CreateAPIView, UpdateAPIView, DestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 
 
@@ -17,3 +17,11 @@ class ShortUrlUpdatedAPIView(UpdateAPIView):
 
     def get_queryset(self):
         return ShortURL.objects.filter(user=self.request.user)
+
+
+class ShortUrlDeleteAPIView(DestroyAPIView):
+    permission_classes = [IsAuthenticated]
+    def get_queryset(self):
+        return ShortURL.objects.filter(user=self.request.user)
+
+
