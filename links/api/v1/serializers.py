@@ -11,6 +11,11 @@ class ShortUrlCreateSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user=self.context['request'].user
+        if not user.is_premium:
+            if ShortURL.objects.filter(user=user).count() >=50:
+                raise serializers.ValidationError(
+                    "Non-premium users can only create up to 50 links."
+                )
         custom_alias = validated_data.get('custom_alias' , None)
         if custom_alias:
             validate_short_url(custom_alias)
