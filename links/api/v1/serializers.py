@@ -28,3 +28,10 @@ class ShortUrlCreateSerializer(serializers.ModelSerializer):
             short_code=short_code,
             **validated_data
         )
+
+
+class ShortUrlUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+
+        model=ShortURL
+        fields=['is_active','qr_code','expires_time']
