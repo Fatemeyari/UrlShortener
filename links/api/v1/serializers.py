@@ -36,3 +36,13 @@ class ShortUrlUpdateSerializer(serializers.ModelSerializer):
 
         model=ShortURL
         fields=['is_active','qr_code','expires_time']
+
+
+class ShortUrlListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=ShortURL
+        fields = [
+            'original_url', 'short_code', 'clicks', 'is_active',
+            'custom_alias', 'qr_code', 'expires_time',
+            'created_time', 'last_clicked'
+        ]
