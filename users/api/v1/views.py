@@ -11,8 +11,6 @@ from .serializers import (UserRegistrationSerializer , ResendActivationsSerializ
                           PasswordResetRequestSerializer ,PasswordResetConfirmSerializer, UserProfileSerializer,
                           ChangeUserProfileSerializer)
 from ...utils import send_verification_email , resend_varification_email , send_password_reset_email
-from ...models import Profile
-
 User = get_user_model()
 
 class UserRegistrationAPIView(generics.GenericAPIView):
