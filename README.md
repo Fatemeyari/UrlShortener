@@ -31,7 +31,7 @@
 <p>The project uses SQLite for data storage.</p>
 
 <a href="https://github.com/Fatemeyari/UrlShortener/blob/main/docs/Untitled%20Diagram.drawio.png">
-  <img src="docks/Untitled%20Diagram.drawio.png" alt="Database Diagram" width="900">
+  <img src="docks/Untitled%20Diagram.drawio.png" width="900">
 </a>
 
 
